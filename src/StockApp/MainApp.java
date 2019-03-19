@@ -65,6 +65,8 @@ public class MainApp extends Application {
                 ".csv"));
         companyOverview.add(new Company("Worldpay Group plc", "WPG" +
                 ".L", "WPG.csv"));
+
+
     }
 
     /**
