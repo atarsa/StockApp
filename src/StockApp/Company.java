@@ -2,6 +2,8 @@ package StockApp;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -18,6 +20,7 @@ public class Company {
     private final StringProperty companyName;
     private final StringProperty companyDataFileName;
     private StringProperty latestPrice;
+    private ObservableList<ObservableList<String>> companyHistoryData;
 
     /**
      * Default constructor
@@ -40,13 +43,16 @@ public class Company {
 
         // Get Company History Data from corresponding csv file
         List<List<String>> companyData = getDataFromCsvFile(companyDataFileName);
+        // Load data from 2d array to Observable List.
+        this.companyHistoryData = buildData(companyData);//
+        // TODO
         // get latest share price from company data
         String latest = companyData.get(1).get(6);
         this.latestPrice = new SimpleStringProperty(latest);
 
     }
 
-    // TODO: open appropriate csv file  and convert it to companyData Array
+    // TODO: refactor
     public List<List<String>> getDataFromCsvFile(String companyDataFileName){
         String csvFile = "StockData/" + companyDataFileName;
         String line;
@@ -67,6 +73,19 @@ public class Company {
         }
         return csvData;
     }
+
+    // code from https://coderanch
+    // .com/t/663384/java/Populating-TableView-method; add credits @19.03.18
+    private ObservableList<ObservableList<String>> buildData(List<List<String>> dataArray) {
+        ObservableList<ObservableList<String>> data = FXCollections.observableArrayList();
+
+        for (List<String> row : dataArray) {
+            data.add(FXCollections.observableArrayList(row));
+        }
+
+        return data;
+    }
+
     // Getters and Setters.
     public String getCompanyName() {
         return companyName.get();
@@ -121,5 +140,7 @@ public class Company {
         return latestPrice;
     }
 
-
+    public ObservableList<ObservableList<String>> getCompanyHistoryData() {
+        return companyHistoryData;
+    }
 }
