@@ -48,7 +48,7 @@ public class Company {
         this.companyHistoryData = companyData;
         // TODO
         // get latest share price from company data
-        String latest = companyData[1][6];
+        String latest = companyData[0][6];
         this.latestPrice = new SimpleStringProperty(latest);
 
     }
@@ -60,6 +60,7 @@ public class Company {
         try{
 
             CSVReader csvReader = new CSVReader(new FileReader(csvFile));
+            csvReader.skip(1); // skip header
             List<String[]> list = csvReader.readAll();
 
             // Convert to 2D array
