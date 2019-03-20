@@ -4,6 +4,8 @@ package StockApp;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
@@ -11,6 +13,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,6 +22,8 @@ import java.util.Comparator;
 
 
 public class CompanyOverviewController {
+    // text entry
+    @FXML private TextField filterInput;
     // company overview table
     @FXML private TableView<Company> companyOverviewTable;
     @FXML private TableColumn<Company, String> companyNameColumn;
@@ -57,13 +62,12 @@ public class CompanyOverviewController {
      */
     @FXML
     private void initialize(){
+
         // Initialize the company overview table with the three columns.
         companySymbolColumn.setCellValueFactory(cellData -> cellData.getValue().companySymbolProperty());
         companyNameColumn.setCellValueFactory(cellData -> cellData.getValue().companyNameProperty());
         latestPriceColumn.setCellValueFactory(cellData -> cellData.getValue().latestPriceProperty());
 
-        // Clear company details
-        //showCompanyHistory(null);
 
         // Listen for selection changes and show company history details and
         // stock graph when  selected
@@ -71,7 +75,7 @@ public class CompanyOverviewController {
          .addListener((observable, oldValue, newValue) -> {
              showCompanyHistory(newValue);
              showLineGraph(newValue);
-                 });
+         });
     }
 
     private void showCompanyHistory(Company company){
@@ -157,7 +161,45 @@ public class CompanyOverviewController {
     public void setMainApp(MainApp mainApp){
         this.mainApp = mainApp;
 
-        // Add observable list data to the table
-        companyOverviewTable.setItems(mainApp.getCompanyOverview());
+        /**
+         * Implementing Filter Search to companyOverview table.
+         * Reference: JavaFX 8 TableView Sorting and Filtering by Marco Jakob
+         * https://code.makery.ch/blog/javafx-8-tableview-sorting-filtering/
+         * accessed @ 20.03.2019
+          */
+
+        // Wrap ObservableList to FilteredList
+        ObservableList<Company> companyOverview = mainApp.getCompanyOverview();
+
+        FilteredList<Company> filteredData =
+                new FilteredList<Company>(companyOverview,
+                        p -> true);
+
+        // Set the filter Predicate whenever the filter changes
+        filterInput.textProperty().addListener((observable, oldValue,
+                                                newValue) -> { filteredData.setPredicate(company -> {
+            // if filter text is empty, display all companies.
+            if (newValue == null){
+                return true;
+            }
+            // Compare company name and symbol with filter text
+            String lowerCaseFilter = newValue.toLowerCase();
+
+            if (company.getCompanyName().toLowerCase().contains(lowerCaseFilter)){
+                return true; // filter matches company name
+            } else if (company.getCompanySymbol().toLowerCase().contains(lowerCaseFilter)){
+                return true; // filter matches company symbol
+            }
+            return false; // does not match
+            });
+        });
+        // Wrap the FilteredList in a SortedList.
+        SortedList<Company> sortedData = new SortedList<>(filteredData);
+
+        // Bind thr SortedList comparator to the TableView comparator
+        sortedData.comparatorProperty().bind(companyOverviewTable.comparatorProperty());
+
+        // Populate companyOverview table with sorted data.
+        companyOverviewTable.setItems(sortedData);
     }
 }
