@@ -5,10 +5,17 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Comparator;
 
 
 public class CompanyOverviewController {
@@ -27,6 +34,11 @@ public class CompanyOverviewController {
     @FXML private TableColumn<ObservableList<String>, String>  closeColumn;
     @FXML private TableColumn<ObservableList<String>, String>  volumeColumn;
     @FXML private TableColumn<ObservableList<String>, String>  adjCloseColumn;
+
+    // company stock graph
+    @FXML private CategoryAxis xAxis;
+    @FXML private NumberAxis yAxis;
+    @FXML private LineChart lineChart;
 
     // Reference to the main application
     private MainApp mainApp;
@@ -53,11 +65,13 @@ public class CompanyOverviewController {
         // Clear company details
         //showCompanyHistory(null);
 
-        // Listen for selection changes and show company history details when
-        // selected
+        // Listen for selection changes and show company history details and
+        // stock graph when  selected
         companyOverviewTable.getSelectionModel().selectedItemProperty()
-         .addListener((observable, oldValue, newValue) -> showCompanyHistory(newValue));
-
+         .addListener((observable, oldValue, newValue) -> {
+             showCompanyHistory(newValue);
+             showLineGraph(newValue);
+                 });
     }
 
     private void showCompanyHistory(Company company){
@@ -81,7 +95,8 @@ public class CompanyOverviewController {
          }
     }
     // code from https://coderanch
-    // .com/t/663384/java/Populating-TableView-method; add credits @19.03.18
+    // .com/t/663384/java/Populating-TableView-method; TODO: add credits @19
+    // .03.18
     private ObservableList<ObservableList<String>> buildData(String[][] dataArray) {
         ObservableList<ObservableList<String>> data =
                 FXCollections.observableArrayList();
@@ -93,7 +108,45 @@ public class CompanyOverviewController {
         return data;
     }
 
+    private void showLineGraph(Company company){
+        if (company != null){
+            // clear graph if already populated
+            lineChart.getData().clear();
 
+            // Get company history data
+            String[][] dataArr = company.getCompanyHistoryData();
+            // Sort dataArr in dates ascending order
+            Arrays.sort(dataArr, new Comparator<String[]>(){
+                @Override
+                public int compare(final String[] first, final String[] second)  {
+                    try{
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM" +
+                                "/yyyy");
+                        return sdf.parse(first[0]).compareTo(sdf.parse(second[0]));
+                    } catch (ParseException e){
+                        e.getErrorOffset();
+                    }
+                    return -1;
+                }
+            });
+
+            // Create data series
+            XYChart.Series<String, Number> series = new XYChart.Series();
+            series.setName(company.getCompanyName());
+
+            for (String[] row: dataArr){
+                series.getData().add(new XYChart.Data(row[0],
+                        Double.parseDouble(row[6])));
+            }
+            // populate chart
+            lineChart.getData().add(series);
+            lineChart.setCreateSymbols(false);
+
+        } else {
+            // Clear the graph
+          lineChart.getData().clear();
+        }
+    }
 
 
     /**

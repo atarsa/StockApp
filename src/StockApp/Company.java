@@ -53,7 +53,7 @@ public class Company {
 
     }
 
-    // TODO: refactor
+    // TODO: refactor to different class
     public String[][] getDataFromCsvFile(String companyDataFileName) {
         String[][] dataArr = new String[0][0];
         String csvFile = "StockData/" + companyDataFileName;
