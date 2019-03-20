@@ -7,13 +7,17 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,9 +45,10 @@ public class CompanyOverviewController {
     @FXML private TableColumn<ObservableList<String>, String>  adjCloseColumn;
 
     // company stock graph
-    @FXML private CategoryAxis xAxis;
-    @FXML private NumberAxis yAxis;
-    @FXML private LineChart lineChart;
+//    @FXML private CategoryAxis xAxis;
+//    @FXML private NumberAxis yAxis;
+//    @FXML private LineChart lineChart;
+     @FXML private AnchorPane chartPlaceholder;
 
     // Reference to the main application
     private MainApp mainApp;
@@ -67,6 +72,13 @@ public class CompanyOverviewController {
         companySymbolColumn.setCellValueFactory(cellData -> cellData.getValue().companySymbolProperty());
         companyNameColumn.setCellValueFactory(cellData -> cellData.getValue().companyNameProperty());
         latestPriceColumn.setCellValueFactory(cellData -> cellData.getValue().latestPriceProperty());
+
+        // Add label to chartPlaceholder;
+        Text label = new Text("Select Company to See Stock Chart.");
+
+        chartPlaceholder.getChildren().add(label);
+        chartPlaceholder.setTopAnchor(label, 20.0);
+        chartPlaceholder.setLeftAnchor(label, 20.0);
 
 
         // Listen for selection changes and show company history details and
@@ -112,33 +124,43 @@ public class CompanyOverviewController {
         return data;
     }
 
-    private void showLineGraph(Company company){
-        if (company != null){
+    private void showLineGraph(Company company) {
+        if (company != null) {
             // clear graph if already populated
-            lineChart.getData().clear();
+            chartPlaceholder.getChildren().clear();
+
+            // declare axis
+            final CategoryAxis xAxis = new CategoryAxis();
+            final NumberAxis yAxis = new NumberAxis();
+            xAxis.setLabel("Date");
+            final LineChart<String, Number> lineChart =
+                    new LineChart<String, Number>(xAxis, yAxis);
+
+            lineChart.setTitle("Stock Monitoring, 2010");
 
             // Get company history data
             String[][] dataArr = company.getCompanyHistoryData();
             // Sort dataArr in dates ascending order
-            Arrays.sort(dataArr, new Comparator<String[]>(){
+            Arrays.sort(dataArr, new Comparator<String[]>() {
                 @Override
-                public int compare(final String[] first, final String[] second)  {
-                    try{
+                public int compare(final String[] first, final String[] second) {
+                    try {
                         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM" +
                                 "/yyyy");
                         return sdf.parse(first[0]).compareTo(sdf.parse(second[0]));
-                    } catch (ParseException e){
+                    } catch (ParseException e) {
                         e.getErrorOffset();
                     }
                     return -1;
                 }
             });
 
+
             // Create data series
             XYChart.Series<String, Number> series = new XYChart.Series();
             series.setName(company.getCompanyName());
 
-            for (String[] row: dataArr){
+            for (String[] row : dataArr) {
                 series.getData().add(new XYChart.Data(row[0],
                         Double.parseDouble(row[6])));
             }
@@ -146,12 +168,10 @@ public class CompanyOverviewController {
             lineChart.getData().add(series);
             lineChart.setCreateSymbols(false);
 
-        } else {
-            // Clear the graph
-          lineChart.getData().clear();
+            chartPlaceholder.getChildren().add(lineChart);
+
         }
     }
-
 
     /**
      * Is called by the main application to give a reference back to itself.
