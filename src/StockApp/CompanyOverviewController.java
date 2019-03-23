@@ -7,12 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
-import javafx.scene.control.Label;
+import javafx.scene.chart.*;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -48,7 +43,8 @@ public class CompanyOverviewController {
 //    @FXML private CategoryAxis xAxis;
 //    @FXML private NumberAxis yAxis;
 //    @FXML private LineChart lineChart;
-     @FXML private AnchorPane chartPlaceholder;
+     @FXML private AnchorPane priceChartPlaceholder;
+     @FXML private AnchorPane volumeChartPlaceholder;
 
     // Reference to the main application
     private MainApp mainApp;
@@ -73,12 +69,12 @@ public class CompanyOverviewController {
         companyNameColumn.setCellValueFactory(cellData -> cellData.getValue().companyNameProperty());
         latestPriceColumn.setCellValueFactory(cellData -> cellData.getValue().latestPriceProperty());
 
-        // Add label to chartPlaceholder;
+        // Add label to priceChartPlaceholder;
         Text label = new Text("Select Company to See Stock Chart.");
 
-        chartPlaceholder.getChildren().add(label);
-        chartPlaceholder.setTopAnchor(label, 20.0);
-        chartPlaceholder.setLeftAnchor(label, 20.0);
+        priceChartPlaceholder.getChildren().add(label);
+        priceChartPlaceholder.setTopAnchor(label, 20.0);
+        priceChartPlaceholder.setLeftAnchor(label, 20.0);
 
 
         // Listen for selection changes and show company history details and
@@ -86,7 +82,7 @@ public class CompanyOverviewController {
         companyOverviewTable.getSelectionModel().selectedItemProperty()
          .addListener((observable, oldValue, newValue) -> {
              showCompanyHistory(newValue);
-             showLineGraph(newValue);
+             showLineGraphs(newValue);
          });
     }
 
@@ -124,19 +120,28 @@ public class CompanyOverviewController {
         return data;
     }
 
-    private void showLineGraph(Company company) {
+    private void showLineGraphs(Company company) {
         if (company != null) {
             // clear graph if already populated
-            chartPlaceholder.getChildren().clear();
+            priceChartPlaceholder.getChildren().clear();
+            volumeChartPlaceholder.getChildren().clear();
 
-            // declare axis
+            // declare charts and axis
+            // Line chart for Closing price
             final CategoryAxis xAxis = new CategoryAxis();
             final NumberAxis yAxis = new NumberAxis();
             xAxis.setLabel("Date");
             final LineChart<String, Number> lineChart =
                     new LineChart<String, Number>(xAxis, yAxis);
+            lineChart.setTitle("Closing Price, Nov 2016 - Feb 2017");
 
-            lineChart.setTitle("Stock Monitoring, 2010");
+            // Bar chart for Volume sold
+            final CategoryAxis xAxis2 = new CategoryAxis();
+            final NumberAxis yAxis2 = new NumberAxis();
+            xAxis.setLabel("Date");
+            final BarChart<String, Number> barChart =
+                    new BarChart<String, Number>(xAxis2, yAxis2);
+            barChart.setTitle("Volume Sold, Nov 2016 - Feb 2017");
 
             // Get company history data
             String[][] dataArr = company.getCompanyHistoryData();
@@ -157,18 +162,27 @@ public class CompanyOverviewController {
 
 
             // Create data series
-            XYChart.Series<String, Number> series = new XYChart.Series();
-            series.setName(company.getCompanyName());
+            XYChart.Series<String, Number> lineChartseries = new XYChart.Series();
+            lineChartseries.setName(company.getCompanyName());
+
+            XYChart.Series<String, Number> barChartSeries =
+                    new XYChart.Series();
+            barChartSeries.setName(company.getCompanyName());
 
             for (String[] row : dataArr) {
-                series.getData().add(new XYChart.Data(row[0],
+                lineChartseries.getData().add(new XYChart.Data(row[0],
                         Double.parseDouble(row[6])));
+                barChartSeries.getData().add(new XYChart.Data(row[0],
+                        Double.parseDouble(row[5])));
             }
-            // populate chart
-            lineChart.getData().add(series);
+            // populate charts
+            lineChart.getData().add(lineChartseries);
             lineChart.setCreateSymbols(false);
 
-            chartPlaceholder.getChildren().add(lineChart);
+            barChart.getData().add(barChartSeries);
+
+            priceChartPlaceholder.getChildren().add(lineChart);
+            volumeChartPlaceholder.getChildren().add(barChart);
 
         }
     }
