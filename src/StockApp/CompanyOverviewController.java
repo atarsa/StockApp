@@ -148,22 +148,25 @@ public class CompanyOverviewController {
              // get min and max opening/closing value to set Y-axis of Scatter
             // Chart
 
-            List<String> openValues = new ArrayList<String>();
-            List<String> closeValues = new ArrayList<String>();;
+            List<Double> openValues = new ArrayList<Double>();
+            List<Double> closeValues = new ArrayList<Double>();
             for (String[] row: dataArr){
-                openValues.add(row[1]);
-                closeValues.add(row[4]);
+                openValues.add(Double.parseDouble(row[1]));
+                closeValues.add(Double.parseDouble(row[4]));
             }
+
 
             openValues.sort(null); // sort list in ascending order
             closeValues.sort(null);
+            System.out.println(openValues);
+            System.out.println(closeValues);
 
-            double minOpen = Double.parseDouble(openValues.get(0));
+            double minOpen = openValues.get(0);
             double maxOpen =
-                    Double.parseDouble(openValues.get(openValues.size()-1));
-            double minClose = Double.parseDouble(closeValues.get(0));
+                    openValues.get(openValues.size()-1);
+            double minClose = closeValues.get(0);
             double maxClose=
-                    Double.parseDouble(closeValues.get(closeValues.size()-1));
+                    closeValues.get(closeValues.size()-1);
 
             double min = Math.min(minOpen, minClose);
             double max = Math.max(maxOpen, maxClose);
@@ -173,6 +176,7 @@ public class CompanyOverviewController {
             final CategoryAxis xAxis = new CategoryAxis();
             final NumberAxis yAxis = new NumberAxis(min-50,max+50,
                     50);
+
             xAxis.setLabel("Date");
             final ScatterChart<String, Number> scatterChart =
                     new ScatterChart<String, Number>(xAxis, yAxis);
