@@ -1,0 +1,19 @@
+.chart-symbol{
+    /*-fx-shape: "M0,4 L2,4 L4,8 L7,0 L9,0 L4,11 Z";  tick symbol*/
+
+    -fx-background-radius: 3px;
+    -fx-padding: 3px;
+}
+
+.default-color1.chart-symbol{
+    -fx-stroke: red;
+    -fx-background-color:  red;
+    /*-fx-shape: "M0,4 L2,4 L4,8 L7,0 L9,0 L4,11 Z";*/
+
+}
+
+.default-color0.chart-symbol{
+    -fx-stroke: green;
+    -fx-background-color: green;
+
+}

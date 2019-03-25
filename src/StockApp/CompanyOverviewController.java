@@ -16,8 +16,10 @@ import javafx.scene.text.Text;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 
 
 public class CompanyOverviewController {
@@ -126,23 +128,6 @@ public class CompanyOverviewController {
             priceChartPlaceholder.getChildren().clear();
             volumeChartPlaceholder.getChildren().clear();
 
-            // declare charts and axis
-            // Line chart for Closing price
-            final CategoryAxis xAxis = new CategoryAxis();
-            final NumberAxis yAxis = new NumberAxis();
-            xAxis.setLabel("Date");
-            final LineChart<String, Number> lineChart =
-                    new LineChart<String, Number>(xAxis, yAxis);
-            lineChart.setTitle("Closing Price, Nov 2016 - Feb 2017");
-
-            // Bar chart for Volume sold
-            final CategoryAxis xAxis2 = new CategoryAxis();
-            final NumberAxis yAxis2 = new NumberAxis();
-            xAxis.setLabel("Date");
-            final BarChart<String, Number> barChart =
-                    new BarChart<String, Number>(xAxis2, yAxis2);
-            barChart.setTitle("Volume Sold, Nov 2016 - Feb 2017");
-
             // Get company history data
             String[][] dataArr = company.getCompanyHistoryData();
             // Sort dataArr in dates ascending order
@@ -160,28 +145,76 @@ public class CompanyOverviewController {
                 }
             });
 
+             // get min and max opening/closing value to set Y-axis of Scatter
+            // Chart
+
+            List<String> openValues = new ArrayList<String>();
+            List<String> closeValues = new ArrayList<String>();;
+            for (String[] row: dataArr){
+                openValues.add(row[1]);
+                closeValues.add(row[4]);
+            }
+
+            openValues.sort(null); // sort list in ascending order
+            closeValues.sort(null);
+
+            double minOpen = Double.parseDouble(openValues.get(0));
+            double maxOpen =
+                    Double.parseDouble(openValues.get(openValues.size()-1));
+            double minClose = Double.parseDouble(closeValues.get(0));
+            double maxClose=
+                    Double.parseDouble(closeValues.get(closeValues.size()-1));
+
+            double min = Math.min(minOpen, minClose);
+            double max = Math.max(maxOpen, maxClose);
+
+            // Declare charts and axis
+            // Scatter chart for closing and opening price
+            final CategoryAxis xAxis = new CategoryAxis();
+            final NumberAxis yAxis = new NumberAxis(min-50,max+50,
+                    50);
+            xAxis.setLabel("Date");
+            final ScatterChart<String, Number> scatterChart =
+                    new ScatterChart<String, Number>(xAxis, yAxis);
+            scatterChart.setTitle("Opening and Closing Price");
+
+            // Bar chart for Volume sold
+            final CategoryAxis xAxis2 = new CategoryAxis();
+            final NumberAxis yAxis2 = new NumberAxis();
+            xAxis.setLabel("Date");
+            final BarChart<String, Number> barChart =
+                    new BarChart<String, Number>(xAxis2, yAxis2);
+            barChart.setTitle("Volume Sold, Nov 2016 - Feb 2017");
+
 
             // Create data series
-            XYChart.Series<String, Number> lineChartseries = new XYChart.Series();
-            lineChartseries.setName(company.getCompanyName());
+            // for scatter chart
+            XYChart.Series<String, Number> scatterChartSeriesOpen =
+                    new XYChart.Series();
+            scatterChartSeriesOpen.setName("opening");
 
+            XYChart.Series<String, Number> scatterChartSeriesClose =
+                    new XYChart.Series();
+            scatterChartSeriesClose.setName("closing");
+
+            // for bar chart
             XYChart.Series<String, Number> barChartSeries =
                     new XYChart.Series();
             barChartSeries.setName(company.getCompanyName());
 
             for (String[] row : dataArr) {
-                lineChartseries.getData().add(new XYChart.Data(row[0],
-                        Double.parseDouble(row[6])));
+                scatterChartSeriesOpen.getData().add(new XYChart.Data(row[0],
+                        Double.parseDouble(row[1])));
+                scatterChartSeriesClose.getData().add(new XYChart.Data(row[0],
+                        Double.parseDouble(row[4])));
                 barChartSeries.getData().add(new XYChart.Data(row[0],
                         Double.parseDouble(row[5])));
             }
             // populate charts
-            lineChart.getData().add(lineChartseries);
-            lineChart.setCreateSymbols(false);
-
+            scatterChart.getData().addAll(scatterChartSeriesOpen, scatterChartSeriesClose);
             barChart.getData().add(barChartSeries);
 
-            priceChartPlaceholder.getChildren().add(lineChart);
+            priceChartPlaceholder.getChildren().add(scatterChart);
             volumeChartPlaceholder.getChildren().add(barChart);
 
         }
