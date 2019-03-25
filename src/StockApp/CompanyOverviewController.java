@@ -89,6 +89,7 @@ public class CompanyOverviewController {
              showCompanyHistory(newValue);
              showLineGraphs(newValue);
          });
+
     }
 
     private void showCompanyHistory(Company company){
@@ -135,8 +136,7 @@ public class CompanyOverviewController {
             String[][] dataArr = company.getCompanyHistoryData();
             // Sort dataArr in dates ascending order
             Arrays.sort(dataArr, new Comparator<String[]>() {
-                // TODO: bug!! arrays sorting in turns, either in ascending or
-                //  descending order, starting from ascending
+
                 @Override
                 public int compare(final String[] first, final String[] second) {
                   // DateTimeFormatterBuilder with reference to code on StockOverflow,

@@ -11,6 +11,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class MainApp extends Application {
     private Stage primaryStage;
@@ -86,6 +88,9 @@ public class MainApp extends Application {
         initRootLayout();
 
         showCompanyOverview();
+
+        //generateReport(); // TODO: generate report on click from menu
+
   }
 
     /**
@@ -127,6 +132,13 @@ public class MainApp extends Application {
 
         } catch (IOException e){
             e.printStackTrace();
+        }
+    }
+
+    public void generateReport(){
+        List<Company> companyOverview = getCompanyOverview();
+        for (Company company:companyOverview){
+            System.out.println(company.getCompanyName());
         }
     }
 
