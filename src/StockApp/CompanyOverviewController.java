@@ -16,6 +16,9 @@ import javafx.scene.text.Text;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -132,16 +135,22 @@ public class CompanyOverviewController {
             String[][] dataArr = company.getCompanyHistoryData();
             // Sort dataArr in dates ascending order
             Arrays.sort(dataArr, new Comparator<String[]>() {
+                // TODO: bug!! arrays sorting in turns, either in ascending or
+                //  descending order, starting from ascending
                 @Override
                 public int compare(final String[] first, final String[] second) {
-                    try {
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM" +
-                                "/yyyy");
-                        return sdf.parse(first[0]).compareTo(sdf.parse(second[0]));
-                    } catch (ParseException e) {
-                        e.getErrorOffset();
-                    }
-                    return -1;
+                  // DateTimeFormatterBuilder with reference to code on StockOverflow,
+                    // answer by Alexis C.
+                    // https://stackoverflow.com/questions/23488721/how-to-check-if-string-matches-date-pattern-using-time-api
+                    // accessed @ 25/03/19
+                    DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+                            .appendOptional(DateTimeFormatter.ofPattern(
+                                    "dd/MM/yyyy"))
+                            .appendOptional(DateTimeFormatter.ofPattern(
+                                    "yyyy-MM-dd"))
+                            .toFormatter();
+
+                    return LocalDate.parse(first[0], formatter).compareTo(LocalDate.parse(second[0], formatter));
                 }
             });
 
@@ -155,11 +164,8 @@ public class CompanyOverviewController {
                 closeValues.add(Double.parseDouble(row[4]));
             }
 
-
             openValues.sort(null); // sort list in ascending order
             closeValues.sort(null);
-            System.out.println(openValues);
-            System.out.println(closeValues);
 
             double minOpen = openValues.get(0);
             double maxOpen =
@@ -180,7 +186,7 @@ public class CompanyOverviewController {
             xAxis.setLabel("Date");
             final ScatterChart<String, Number> scatterChart =
                     new ScatterChart<String, Number>(xAxis, yAxis);
-            scatterChart.setTitle("Opening and Closing Price");
+            scatterChart.setTitle("Opening and Closing Prices, Nov 2016 - Feb 2017");
 
             // Bar chart for Volume sold
             final CategoryAxis xAxis2 = new CategoryAxis();
@@ -195,11 +201,11 @@ public class CompanyOverviewController {
             // for scatter chart
             XYChart.Series<String, Number> scatterChartSeriesOpen =
                     new XYChart.Series();
-            scatterChartSeriesOpen.setName("opening");
+            scatterChartSeriesOpen.setName("Opening Price");
 
             XYChart.Series<String, Number> scatterChartSeriesClose =
                     new XYChart.Series();
-            scatterChartSeriesClose.setName("closing");
+            scatterChartSeriesClose.setName("Closing Price");
 
             // for bar chart
             XYChart.Series<String, Number> barChartSeries =
