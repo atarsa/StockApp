@@ -92,7 +92,7 @@ public class Company {
           // Close --> latest closing price
           String latestClose = getLatestPrice();
 
-            // TODO: refactor!! REPEATED CODE!!!!
+          // Get all the prices to find min and max
           List<Double> allPrices = new ArrayList<Double>();
           List<Double> closeValues = new ArrayList<Double>();
 
@@ -102,75 +102,53 @@ public class Company {
               allPrices.add(Double.parseDouble(row[3]));
               allPrices.add(Double.parseDouble(row[4]));
               closeValues.add(Double.parseDouble(row[4]));
-
           }
 
           allPrices.sort(null); // sort list in ascending order
           closeValues.sort(null);
 
-//          double minOpen = openValues.get(0);
-//          double maxOpen =
-//                  openValues.get(openValues.size()-1);
-//          double minClose = closeValues.get(0);
-//          double maxClose=
-//                  closeValues.get(closeValues.size()-1);
-//
-//          double min = Math.min(minOpen, minClose);
-//          double max = Math.max(maxOpen, maxClose);
           double min = allPrices.get(0);
           double max = allPrices.get(allPrices.size()-1);
 
-
-
-          System.out.println("MIN: " + min);
-          System.out.println("MAX: " + max);
-          System.out.println("MIN trimmed: "+ trimZeroFromDouble(min));
-          System.out.println("MAX trimmed: "+ trimZeroFromDouble(max));
-
           for (String[] row: dataArr){
               // find date for lowest and highest price
+              // convert array to arrayList for easier look up
               List<String> rowList = Arrays.asList(row);
-              if (rowList.contains(trimZeroFromDouble(max))){
+              // check if given string has 2 or 3 places after period
+              if (rowList.contains(String.format("%.3f", max))){
                     dateOfHighest = rowList.get(0);
-              }
-              if (rowList.contains(max)){
+              } else if (rowList.contains(String.format("%.2f", max))){
+                  dateOfHighest = rowList.get(0);
+              } else if (rowList.contains(max)){
                   dateOfHighest = rowList.get(0);
               }
 
               if (rowList.contains(min)){
                   dateOfLowest = rowList.get(0);
-              }
-              if (rowList.contains(trimZeroFromDouble(min))){
+              } else if (rowList.contains(String.format("%.2f",min))){
+                  dateOfLowest = rowList.get(0);
+              } else if (rowList.contains(String.format("%.3f",min))){
                   dateOfLowest = rowList.get(0);
               }
           }
           // find average
           double total = 0.0;
-          for (int i =0; i < closeValues.size(); i++){
-              total += closeValues.get(i);
+          for (Double closeValue : closeValues) {
+              total += closeValue;
           }
           averageClose = total / closeValues.size();
 
-
           // print to console
+          System.out.println("===========================");
           System.out.println("company name: " + name);
           System.out.println("symbol: " + symbol);
           System.out.println("Highest: " + dateOfHighest);
           System.out.println("Lowest: " + dateOfLowest);
-          System.out.println("Average close: %.2f" + averageClose);
+          System.out.println("Average close: " + String.format("%.3f",
+                  averageClose));
           System.out.println(" close: " + latestClose);
-
-
       }
 
-      public String trimZeroFromDouble(Double num){
-        if (num == Math.floor(num)){
-            return String.format("%.2f", num);
-        } else {
-
-            return Double.toString(num);
-        }
-      }
 
     // Getters and Setters.
     public String getCompanyName() {
