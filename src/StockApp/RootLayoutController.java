@@ -3,9 +3,8 @@ package StockApp;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.stage.FileChooser;
-import StockApp.MainApp;
-
 import java.io.File;
+import java.io.IOException;
 
 public class RootLayoutController {
     // Reference to the main application
@@ -20,18 +19,16 @@ public class RootLayoutController {
         this.mainApp = mainApp;
     }
 
-
     /**
      * Opens a FileChooser to let the user select a file to save to.
      */
     @FXML
-    private void handleSaveAs() {
+    private void handleSaveAs() throws IOException {
         FileChooser fileChooser = new FileChooser();
 
         // Set extension filter
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
-                "Text files (*.txt)", "*.txt");
-        fileChooser.getExtensionFilters().add(extFilter);
+         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(
+                "Text files (*.txt)", "*.txt"));
 
         // Show save file dialog
         File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
@@ -43,6 +40,14 @@ public class RootLayoutController {
             }
             mainApp.saveCompaniesDataToFile(file);
         }
+
+        // Show success alert
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Stock Explorer");
+        alert.setHeaderText("Success");
+        alert.setContentText("File saved successfully");
+
+        alert.showAndWait();
     }
 
     /**

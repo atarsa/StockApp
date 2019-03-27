@@ -10,6 +10,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
@@ -139,15 +140,36 @@ public class MainApp extends Application {
         }
     }
 
-    public void saveCompaniesDataToFile(File file){
+    /**
+     * Saves companies report to one .txt file
+     * @param file - path to text file created by user,
+     *            retrieved from FileChooser
+     * @throws IOException
+     */
+    public void saveCompaniesDataToFile(File file) throws IOException{
         List<Company> companyOverview = getCompanyOverview();
-        for (Company company:companyOverview){
-            System.out.println(company.getCompanySymbol());
-            System.out.println(company.getCompanyName());
-            System.out.println("Highest: "+ company.getDateOfHighestPrice());
-            System.out.println("Lowest: "+ company.getDateOfLowestPrice());
-            System.out.println("Average Close: "+ company.getAverageClosePrice());
-            System.out.println("Latest Close: " + company.getLatestPrice());
+        FileWriter fileWriter = null;
+        try {
+            fileWriter = new FileWriter(file);
+            for (int i=0; i < companyOverview.size(); i++){
+                fileWriter.write("\n");
+                fileWriter.write("Number: " + (i+1) + "\n");
+                fileWriter.write("\n");
+                fileWriter.write("Stock Symbol: " + companyOverview.get(i).getCompanySymbol()+ "\n");
+                fileWriter.write("Company Name: " + companyOverview.get(i).getCompanyName()+ "\n");
+                fileWriter.write("Highest: " + companyOverview.get(i).getDateOfHighestPrice()+
+                        "\n");
+                fileWriter.write("Lowest: " + companyOverview.get(i).getDateOfLowestPrice()+
+                        "\n");
+                fileWriter.write("Average close: " + companyOverview.get(i).getAverageClosePrice()+ "\n");
+                fileWriter.write("Close: " + companyOverview.get(i).getLatestPrice() + "\n");
+                fileWriter.write("\n======================== \n");
+            }
+        }
+        finally {
+            if (fileWriter != null){
+                fileWriter.close();
+            }
         }
     }
 
