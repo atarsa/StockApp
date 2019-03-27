@@ -3,10 +3,12 @@ package StockApp;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -140,6 +142,31 @@ public class MainApp extends Application {
         }
     }
 
+    /**
+     * Opens a window with generated report.
+     */
+    public void showCompaniesReport(){
+        try{
+            // Load the fxml file and create a new stage for the window
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("Report.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+            Stage reportStage = new Stage();
+            reportStage.setTitle("Companies Report");
+            reportStage.initModality(Modality.WINDOW_MODAL);
+            reportStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            reportStage.setScene(scene);
+
+            // Set companies into the controller
+            ReportController controller = loader.getController();
+            controller.setCompanyData(companyOverview);
+
+            reportStage.show();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
     /**
      * Saves companies report to one .txt file
      * @param file - path to text file created by user,

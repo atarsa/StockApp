@@ -67,8 +67,8 @@
                 </SplitPane>
                 <HBox prefHeight="290.0" prefWidth="800.0">
                     <children>
-                        <AnchorPane fx:id="priceChartPlaceholder" prefHeight="550.0" prefWidth="550.0" HBox.hgrow="ALWAYS" />
-                        <AnchorPane fx:id="volumeChartPlaceholder" prefHeight="550.0" prefWidth="550.0" />
+                        <AnchorPane fx:id="priceChartPlaceholder" prefHeight="390.0" prefWidth="540.0" HBox.hgrow="ALWAYS" />
+                        <AnchorPane fx:id="volumeChartPlaceholder" prefHeight="390.0" prefWidth="503.0" HBox.hgrow="ALWAYS" />
                     </children>
                 </HBox>
             </items>
