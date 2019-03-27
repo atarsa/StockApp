@@ -39,17 +39,25 @@ public class RootLayoutController {
                 file = new File(file.getPath() + ".txt");
             }
             mainApp.saveCompaniesDataToFile(file);
+
+            // Show success alert
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Stock Explorer");
+            alert.setHeaderText("Success");
+            alert.setContentText("File saved successfully");
+
+            alert.showAndWait();
         }
 
-        // Show success alert
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Stock Explorer");
-        alert.setHeaderText("Success");
-        alert.setContentText("File saved successfully");
 
-        alert.showAndWait();
     }
 
+    /**
+     * Show Companies Report
+     */
+    public void handleShowCompaniesReport(){
+        mainApp.showCompaniesReport();
+    }
     /**
      * Opens an about dialog.
      */
