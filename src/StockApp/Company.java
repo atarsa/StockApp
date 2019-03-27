@@ -3,10 +3,7 @@ package StockApp;
 import com.opencsv.CSVReader;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
-import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,6 +19,13 @@ public class Company {
     private final StringProperty companyDataFileName;
     private final StringProperty latestPrice;
     private final String[][] companyHistoryData;
+    // Data needed to create report
+    private final StringProperty dateOfHighestPrice;
+    private final StringProperty dateOfLowestPrice;
+    private final StringProperty averageClosePrice;
+
+
+
 
     /**
      * Default constructor
@@ -50,7 +54,69 @@ public class Company {
         // get latest share price from company data
         String latest = companyData[0][6];
         this.latestPrice = new SimpleStringProperty(latest);
-        createCompanyReport(companyDataFileName);
+
+        // get values needed to create a report
+        // extra data for report:
+        // Highest --> date with the highest price of the stock
+        String dateOfHighest = "";
+        // Lowest
+        String dateOfLowest = "";
+        // Average close
+        Double averageClose;
+
+
+        // Get all the prices to find min and max
+        List<Double> allPrices = new ArrayList<Double>();
+        List<Double> closeValues = new ArrayList<Double>();
+
+        for (String[] row: companyData){
+            allPrices.add(Double.parseDouble(row[1]));
+            allPrices.add(Double.parseDouble(row[2]));
+            allPrices.add(Double.parseDouble(row[3]));
+            allPrices.add(Double.parseDouble(row[4]));
+            closeValues.add(Double.parseDouble(row[4]));
+        }
+
+        allPrices.sort(null); // sort list in ascending order
+        closeValues.sort(null);
+
+        double min = allPrices.get(0);
+        double max = allPrices.get(allPrices.size()-1);
+
+        for (String[] row: companyData){
+            // find date for lowest and highest price
+            // convert array to arrayList for easier look up
+            List<String> rowList = Arrays.asList(row);
+            // check if given string has 2 or 3 places after period
+            if (rowList.contains(String.format("%.3f", max))){
+                dateOfHighest = rowList.get(0);
+            } else if (rowList.contains(String.format("%.2f", max))){
+                dateOfHighest = rowList.get(0);
+            } else if (rowList.contains(max)){
+                dateOfHighest = rowList.get(0);
+            }
+
+            if (rowList.contains(min)){
+                dateOfLowest = rowList.get(0);
+            } else if (rowList.contains(String.format("%.2f",min))){
+                dateOfLowest = rowList.get(0);
+            } else if (rowList.contains(String.format("%.3f",min))){
+                dateOfLowest = rowList.get(0);
+            }
+        }
+        // find average
+        double total = 0.0;
+        for (Double closeValue : closeValues) {
+            total += closeValue;
+        }
+        averageClose = total / closeValues.size();
+        String strAverage = String.format("%.3f", averageClose);
+
+        this.dateOfHighestPrice = new SimpleStringProperty(dateOfHighest);
+        this.dateOfLowestPrice = new SimpleStringProperty(dateOfLowest);
+        this.averageClosePrice =
+                new SimpleStringProperty(strAverage);
+
 
     }
 
@@ -74,79 +140,6 @@ public class Company {
         }
          return dataArr;
 
-      }
-
-      public void createCompanyReport(String companyDataFileName){
-        String[][] dataArr = getDataFromCsvFile(companyDataFileName);
-        // data for report:
-          // Stock Symbol
-          String symbol = getCompanySymbol();
-          // Company Name
-          String name = getCompanyName();
-          // Highest --> date with the highest price of the stock
-          String dateOfHighest = "";
-          // Lowest
-          String dateOfLowest = "";
-          // Average close
-          Double averageClose;
-          // Close --> latest closing price
-          String latestClose = getLatestPrice();
-
-          // Get all the prices to find min and max
-          List<Double> allPrices = new ArrayList<Double>();
-          List<Double> closeValues = new ArrayList<Double>();
-
-          for (String[] row: dataArr){
-              allPrices.add(Double.parseDouble(row[1]));
-              allPrices.add(Double.parseDouble(row[2]));
-              allPrices.add(Double.parseDouble(row[3]));
-              allPrices.add(Double.parseDouble(row[4]));
-              closeValues.add(Double.parseDouble(row[4]));
-          }
-
-          allPrices.sort(null); // sort list in ascending order
-          closeValues.sort(null);
-
-          double min = allPrices.get(0);
-          double max = allPrices.get(allPrices.size()-1);
-
-          for (String[] row: dataArr){
-              // find date for lowest and highest price
-              // convert array to arrayList for easier look up
-              List<String> rowList = Arrays.asList(row);
-              // check if given string has 2 or 3 places after period
-              if (rowList.contains(String.format("%.3f", max))){
-                    dateOfHighest = rowList.get(0);
-              } else if (rowList.contains(String.format("%.2f", max))){
-                  dateOfHighest = rowList.get(0);
-              } else if (rowList.contains(max)){
-                  dateOfHighest = rowList.get(0);
-              }
-
-              if (rowList.contains(min)){
-                  dateOfLowest = rowList.get(0);
-              } else if (rowList.contains(String.format("%.2f",min))){
-                  dateOfLowest = rowList.get(0);
-              } else if (rowList.contains(String.format("%.3f",min))){
-                  dateOfLowest = rowList.get(0);
-              }
-          }
-          // find average
-          double total = 0.0;
-          for (Double closeValue : closeValues) {
-              total += closeValue;
-          }
-          averageClose = total / closeValues.size();
-
-          // print to console
-          System.out.println("===========================");
-          System.out.println("company name: " + name);
-          System.out.println("symbol: " + symbol);
-          System.out.println("Highest: " + dateOfHighest);
-          System.out.println("Lowest: " + dateOfLowest);
-          System.out.println("Average close: " + String.format("%.3f",
-                  averageClose));
-          System.out.println(" close: " + latestClose);
       }
 
 
@@ -199,4 +192,37 @@ public class Company {
     public String[][] getCompanyHistoryData() {
          return companyHistoryData;
     }
+
+    public String getDateOfHighestPrice(){
+        return dateOfHighestPrice.get();
+    }
+    public StringProperty dateOfHighestPriceProperty(){
+        return dateOfHighestPrice;
+    }
+
+    public void setDateOfHighestPrice(String dateOfHighestPrice) {
+        this.dateOfHighestPrice.set(dateOfHighestPrice);
+    }
+
+    public String getDateOfLowestPrice() {
+        return dateOfLowestPrice.get();
+    }
+    public void setDateOfLowestPrice(String dateOfLowestPrice) {
+        this.dateOfLowestPrice.set(dateOfLowestPrice);
+    }
+    public StringProperty dateOfLowestPriceProperty(){
+        return dateOfLowestPrice;
+    }
+
+    public String getAverageClosePrice() {
+        return averageClosePrice.get();
+    }
+    public void setAverageClosePrice(String averageClosePrice) {
+
+        this.averageClosePrice.set(averageClosePrice);
+    }
+    public StringProperty averageClosePriceProperty(){
+        return averageClosePrice;
+    }
+
 }

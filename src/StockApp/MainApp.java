@@ -4,14 +4,13 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 public class MainApp extends Application {
@@ -106,6 +105,11 @@ public class MainApp extends Application {
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
+
+            // Give the controller access to the main app.
+            RootLayoutController controller = loader.getController();
+            controller.setMainApp(this);
+
             primaryStage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -135,10 +139,15 @@ public class MainApp extends Application {
         }
     }
 
-    public void generateReport(){
+    public void saveCompaniesDataToFile(File file){
         List<Company> companyOverview = getCompanyOverview();
         for (Company company:companyOverview){
+            System.out.println(company.getCompanySymbol());
             System.out.println(company.getCompanyName());
+            System.out.println("Highest: "+ company.getDateOfHighestPrice());
+            System.out.println("Lowest: "+ company.getDateOfLowestPrice());
+            System.out.println("Average Close: "+ company.getAverageClosePrice());
+            System.out.println("Latest Close: " + company.getLatestPrice());
         }
     }
 
