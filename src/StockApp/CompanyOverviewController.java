@@ -12,6 +12,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.TilePane;
 import javafx.scene.text.Text;
 
 import java.text.ParseException;
@@ -48,8 +50,8 @@ public class CompanyOverviewController {
 //    @FXML private CategoryAxis xAxis;
 //    @FXML private NumberAxis yAxis;
 //    @FXML private LineChart lineChart;
-     @FXML private AnchorPane priceChartPlaceholder;
-     @FXML private AnchorPane volumeChartPlaceholder;
+     @FXML private TilePane priceChartPlaceholder;
+     @FXML private TilePane volumeChartPlaceholder;
 
     // Reference to the main application
     private MainApp mainApp;
@@ -75,11 +77,11 @@ public class CompanyOverviewController {
         latestPriceColumn.setCellValueFactory(cellData -> cellData.getValue().latestPriceProperty());
 
         // Add label to priceChartPlaceholder;
-        Text label = new Text("Select Company to See Stock Chart.");
+        Text label = new Text("Select Company to See Stock Charts.");
+        label.setId("selectLabel");
 
         priceChartPlaceholder.getChildren().add(label);
-        priceChartPlaceholder.setTopAnchor(label, 20.0);
-        priceChartPlaceholder.setLeftAnchor(label, 20.0);
+
 
 
         // Listen for selection changes and show company history details and
@@ -183,7 +185,6 @@ public class CompanyOverviewController {
             final NumberAxis yAxis = new NumberAxis(min-50,max+50,
                     50);
 
-            xAxis.setLabel("Date");
             final ScatterChart<String, Number> scatterChart =
                     new ScatterChart<String, Number>(xAxis, yAxis);
             scatterChart.setTitle("Opening and Closing Prices, Nov 2016 - Feb 2017");
@@ -191,7 +192,7 @@ public class CompanyOverviewController {
             // Bar chart for Volume sold
             final CategoryAxis xAxis2 = new CategoryAxis();
             final NumberAxis yAxis2 = new NumberAxis();
-            xAxis.setLabel("Date");
+
             final BarChart<String, Number> barChart =
                     new BarChart<String, Number>(xAxis2, yAxis2);
             barChart.setTitle("Volume Sold, Nov 2016 - Feb 2017");
@@ -227,6 +228,16 @@ public class CompanyOverviewController {
             priceChartPlaceholder.getChildren().add(scatterChart);
             volumeChartPlaceholder.getChildren().add(barChart);
 
+        } else {
+            // Clear the graphs.
+            System.out.println("No data selected");
+            priceChartPlaceholder.getChildren().clear();
+            volumeChartPlaceholder.getChildren().clear();
+
+            // Add label to priceChartPlaceholder;
+            Text label = new Text("Select Company to See Stock Chart.");
+            label.setId("selectLabel");
+              priceChartPlaceholder.getChildren().add(label);
         }
     }
 

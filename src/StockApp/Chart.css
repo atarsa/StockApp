@@ -1,19 +1,40 @@
 .chart-symbol{
-    /*-fx-shape: "M0,4 L2,4 L4,8 L7,0 L9,0 L4,11 Z";  tick symbol*/
-
+    /* dot symbol*/
     -fx-background-radius: 3px;
     -fx-padding: 3px;
 }
 
-.default-color1.chart-symbol{
-    -fx-stroke: red;
-    -fx-background-color:  red;
-    /*-fx-shape: "M0,4 L2,4 L4,8 L7,0 L9,0 L4,11 Z";*/
-
-}
-
 .default-color0.chart-symbol{
+    /* Opening price series*/
     -fx-stroke: green;
     -fx-background-color: green;
+}
+.default-color1.chart-symbol{
+    /* Closing price series*/
+    -fx-stroke: red;
+    -fx-background-color:  red;
+}
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+
+.chart-title {
+    -fx-text-fill: #18227c;
+    -fx-font-size: 1.6em;
+}
+
+.chart-legend {
+    -fx-background-color:  transparent;
+    -fx-padding: 20px;
+}
+.axis {
+    -fx-font-size: 1.4em;
+    -fx-tick-label-fill: #18227c;
+    -fx-font-family: Tahoma;
 
 }
+
+.axis-label {
+    -fx-text-fill: #462300;
+}
+

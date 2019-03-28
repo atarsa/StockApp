@@ -85,13 +85,12 @@ public class MainApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        this.primaryStage.setTitle("StockApp");
+        this.primaryStage.setTitle("Stock Explorer");
 
         initRootLayout();
 
         showCompanyOverview();
 
-        //generateReport(); // TODO: generate report on click from menu
 
   }
 
@@ -152,12 +151,14 @@ public class MainApp extends Application {
             loader.setLocation(MainApp.class.getResource("Report.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
             Stage reportStage = new Stage();
-            reportStage.setTitle("Companies Report");
+            reportStage.setTitle("Summary Report");
             reportStage.initModality(Modality.WINDOW_MODAL);
             reportStage.initOwner(primaryStage);
-            Scene scene = new Scene(page);
-            reportStage.setScene(scene);
+            Scene scene = new Scene(page, 600,800);
 
+            reportStage.setScene(scene);
+            // add stylesheet
+            scene.getStylesheets().add(getClass().getResource("main.css").toExternalForm());
             // Set companies into the controller
             ReportController controller = loader.getController();
             controller.setCompanyData(companyOverview);

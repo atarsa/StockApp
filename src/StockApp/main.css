@@ -1,0 +1,26 @@
+.split-pane:horizontal > .split-pane-divider {
+    -fx-background-color: transparent;
+}
+.split-pane:vertical > .split-pane-divider {
+    -fx-background-color: transparent;
+}
+
+#selectLabel{
+    -fx-font-family: Verdana;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-start-margin: 150px 150px;
+    -fx-fill: #1a237e;
+}
+
+.root{
+    -fx-font-size: 14px;
+    -fx-font-family: "Verdana";
+    -fx-base:  #b1bfca;
+    -fx-background: #e3f2fd;
+}
+
+.report-label{
+    -fx-font-weight: bold;
+}
+

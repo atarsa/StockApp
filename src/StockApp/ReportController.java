@@ -3,6 +3,7 @@ package StockApp;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -33,60 +34,52 @@ public class ReportController {
             GridPane grid = new GridPane();
             grid.setHgap(10);
             grid.setVgap(10);
-            grid.setPadding(new Insets(10, 10, 10, 10));
+            grid.setPadding(new Insets(20, 40, 20, 40));
 
             // company symbol
             Label symbolLabel = new Label("Stock Symbol: ");
-            symbolLabel.setId("labelText");
+            symbolLabel.getStyleClass().add("report-label");
             grid.add(symbolLabel,0,0);
             Text symbolTxt = new Text(c.getCompanySymbol());
-            //txtSymbol.setId("");
             grid.add(symbolTxt,1,0);
 
             // company name
             Label nameLabel = new Label("Company Name: ");
-            nameLabel.setId("labelText");
+            nameLabel.getStyleClass().add("report-label");
             grid.add(nameLabel,0,1);
             Text nameTxt = new Text(c.getCompanyName());
-            //txtSymbol.setId("");
             grid.add(nameTxt,1,1);
 
             // date with highest stock price
             Label hLabel = new Label("Highest: ");
-            hLabel.setId("labelText");
+            hLabel.getStyleClass().add("report-label");
             grid.add(hLabel,0,2);
             Text hTxt = new Text(c.getDateOfHighestPrice());
-            //txtSymbol.setId("");
             grid.add(hTxt,1,2);
 
             // date with lowest stock price
             Label lLabel = new Label("Lowest: ");
-            lLabel.setId("labelText");
+            lLabel.getStyleClass().add("report-label");
             grid.add(lLabel,0,3);
             Text lTxt = new Text(c.getDateOfLowestPrice());
-            //txtSymbol.setId("");
             grid.add(lTxt,1,3);
 
             // average closing price
             Label avLabel = new Label("Average close: ");
-            avLabel.setId("labelText");
+            avLabel.getStyleClass().add("report-label");
             grid.add(avLabel,0,4);
             Text avTxt = new Text(c.getAverageClosePrice());
-            //txtSymbol.setId("");
             grid.add(avTxt,1,4);
 
             // latest closing stock price
             Label cLabel = new Label("Close: ");
-            cLabel.setId("labelText");
+            cLabel.getStyleClass().add("report-label");
             grid.add(cLabel,0,5);
             Text cTxt = new Text(c.getLatestPrice());
-            //txtSymbol.setId("");
             grid.add(cTxt,1,5);
 
             vBox.getChildren().add(grid);
         }
-
     }
-
 
 }
