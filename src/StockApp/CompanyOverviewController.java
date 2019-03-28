@@ -11,13 +11,8 @@ import javafx.scene.chart.*;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.TilePane;
 import javafx.scene.text.Text;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
@@ -46,10 +41,7 @@ public class CompanyOverviewController {
     @FXML private TableColumn<ObservableList<String>, String>  volumeColumn;
     @FXML private TableColumn<ObservableList<String>, String>  adjCloseColumn;
 
-    // company stock graph
-//    @FXML private CategoryAxis xAxis;
-//    @FXML private NumberAxis yAxis;
-//    @FXML private LineChart lineChart;
+    // company stock graphs placeholders
      @FXML private TilePane priceChartPlaceholder;
      @FXML private TilePane volumeChartPlaceholder;
 
@@ -82,8 +74,6 @@ public class CompanyOverviewController {
 
         priceChartPlaceholder.getChildren().add(label);
 
-
-
         // Listen for selection changes and show company history details and
         // stock graph when  selected
         companyOverviewTable.getSelectionModel().selectedItemProperty()
@@ -114,9 +104,11 @@ public class CompanyOverviewController {
             companyHistoryDataTable.getItems().clear();
          }
     }
-    // code from https://coderanch
-    // .com/t/663384/java/Populating-TableView-method; TODO: add credits @19
-    // .03.18
+    // Populating table from 2D array with reference to code on coderanch
+    // .com
+    // answer by John Damien Smith
+    // on https://coderanch.com/t/663384/java/Populating-TableView-method
+    // accessed  @ 19.03.18
     private ObservableList<ObservableList<String>> buildData(String[][] dataArray) {
         ObservableList<ObservableList<String>> data =
                 FXCollections.observableArrayList();

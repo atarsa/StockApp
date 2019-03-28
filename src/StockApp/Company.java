@@ -24,9 +24,6 @@ public class Company {
     private final StringProperty dateOfLowestPrice;
     private final StringProperty averageClosePrice;
 
-
-
-
     /**
      * Default constructor
      */
@@ -50,7 +47,7 @@ public class Company {
         String[][] companyData = getDataFromCsvFile(companyDataFileName);
         // Load data from 2d array to Observable List.
         this.companyHistoryData = companyData;
-        // TODO
+
         // get latest share price from company data
         String latest = companyData[0][6];
         this.latestPrice = new SimpleStringProperty(latest);
@@ -120,7 +117,7 @@ public class Company {
 
     }
 
-    // TODO: refactor to different class
+    // helper function
     public String[][] getDataFromCsvFile(String companyDataFileName) {
         String[][] dataArr = new String[0][0];
         String csvFile = "StockData/" + companyDataFileName;
@@ -148,10 +145,6 @@ public class Company {
         return companyName.get();
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName.set(companyName);
-    }
-
     public StringProperty companyNameProperty() {
         return companyName;
     }
@@ -160,30 +153,13 @@ public class Company {
         return companySymbol.get();
     }
 
-    public void setCompanySymbol(String companySymbol) {
-        this.companySymbol.set(companySymbol);
-    }
-
     public StringProperty companySymbolProperty() {
         return companySymbol;
-    }
-
-    public String getCompanyDataFileName() {
-        return companyDataFileName.get();
-    }
-
-    public void setCompanyDataFileName(String companyDataFileName) {
-        this.companyDataFileName.set(companyDataFileName);
-    }
-
-    public StringProperty companyDataFileNameProperty() {
-        return companyDataFileName;
     }
 
     public String getLatestPrice() {
         return latestPrice.get();
     }
-
 
     public StringProperty latestPriceProperty(){
         return latestPrice;
@@ -196,33 +172,14 @@ public class Company {
     public String getDateOfHighestPrice(){
         return dateOfHighestPrice.get();
     }
-    public StringProperty dateOfHighestPriceProperty(){
-        return dateOfHighestPrice;
-    }
-
-    public void setDateOfHighestPrice(String dateOfHighestPrice) {
-        this.dateOfHighestPrice.set(dateOfHighestPrice);
-    }
 
     public String getDateOfLowestPrice() {
         return dateOfLowestPrice.get();
-    }
-    public void setDateOfLowestPrice(String dateOfLowestPrice) {
-        this.dateOfLowestPrice.set(dateOfLowestPrice);
-    }
-    public StringProperty dateOfLowestPriceProperty(){
-        return dateOfLowestPrice;
     }
 
     public String getAverageClosePrice() {
         return averageClosePrice.get();
     }
-    public void setAverageClosePrice(String averageClosePrice) {
 
-        this.averageClosePrice.set(averageClosePrice);
-    }
-    public StringProperty averageClosePriceProperty(){
-        return averageClosePrice;
-    }
 
 }

@@ -53,23 +53,12 @@ public class RootLayoutController {
     }
 
     /**
-     * Show Companies Report
+     * Shows Companies Report
      */
     public void handleShowCompaniesReport(){
         mainApp.showCompaniesReport();
     }
-    /**
-     * Opens an about dialog.
-     */
-    @FXML
-    private void handleAbout() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Stock Explorer");
-        alert.setHeaderText("About");
-        alert.setContentText("Author: Agnieszka Tarsa");
 
-        alert.showAndWait();
-    }
 
     /**
      * Closes the application.

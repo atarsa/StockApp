@@ -1,10 +1,7 @@
 package StockApp;
 
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -14,18 +11,7 @@ import java.util.List;
 
 public class ReportController {
 
-    // Reference to the main application
-    private MainApp mainApp;
     @FXML private VBox vBox;
-
-    /**
-     * Is called by the main application to give a reference back to itself.
-     *
-     * @param mainApp
-     */
-    public void setMainApp(MainApp mainApp) {
-        this.mainApp = mainApp;
-    }
 
     public void setCompanyData(List<Company> companies){
 
