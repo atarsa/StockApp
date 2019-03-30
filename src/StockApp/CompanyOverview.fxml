@@ -8,30 +8,30 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane style="-fx-background-color: #e3f2fd;" stylesheets="@main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="StockApp.CompanyOverviewController">
+<AnchorPane style="-fx-background-color: #f9f9f9;" stylesheets="@main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="StockApp.CompanyOverviewController">
     <children>
-      <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="67.0" prefWidth="820.0" style="-fx-background-color: #bbdefb;" stylesheets="@main.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="67.0" prefWidth="820.0" style="-fx-background-color: #c6c6c6;" stylesheets="@main.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-                <Text boundsType="VISUAL" fill="#1a237e" layoutX="25.0" layoutY="8.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Stock Explorer" textOrigin="CENTER" wrappingWidth="379.376953125" y="25.0">
+                <Text boundsType="VISUAL" fill="#263238" layoutX="25.0" layoutY="8.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Stock Explorer" textOrigin="CENTER" wrappingWidth="379.376953125" y="25.0">
                     <font>
                         <Font name="Verdana Bold" size="36.0" />
                     </font>
                 </Text>
          </children>
       </Pane>
-        <SplitPane dividerPositions="0.430062630480167" layoutY="106.0" orientation="VERTICAL" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #e3f2fd; -fx-border-color: #e3f2fd;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="70.0">
+        <SplitPane dividerPositions="0.430062630480167" layoutY="106.0" orientation="VERTICAL" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f9f9f9; -fx-border-color: #f9f9f9;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="70.0">
             <items>
-                <SplitPane dividerPositions="0.350293542074364" prefHeight="312.0" prefWidth="1200.0" style="-fx-background-color: #e3f2fd;">
+                <SplitPane dividerPositions="0.350293542074364" prefHeight="312.0" prefWidth="1200.0" style="-fx-background-color: #f9f9f9;">
                     <items>
-                        <AnchorPane prefHeight="68.0" prefWidth="351.0" style="-fx-background-color: #e3f2fd; -fx-border-color: #e3f2fd;">
+                        <AnchorPane prefHeight="68.0" prefWidth="351.0" style="-fx-background-color: #f9f9f9; -fx-border-color: #f9f9f9;">
                             <children>
-                                <Label layoutX="7.0" layoutY="23.0" prefHeight="25.0" prefWidth="147.0" style="-fx-background-color: #e3f2fd;" text="Filter Companies:" textFill="#1a237e">
+                                <Label layoutX="7.0" layoutY="23.0" prefHeight="25.0" prefWidth="147.0" style="-fx-background-color: #f9f9f9;" text="Filter Companies:" textFill="#263238">
                            <font>
                               <Font name="Verdana Bold" size="14.0" />
                            </font>
                         </Label>
                                 <TextField fx:id="filterInput" layoutX="154.0" layoutY="23.0" prefHeight="25.0" prefWidth="193.0" />
-                                <TableView fx:id="companyOverviewTable" layoutY="71.0" minWidth="350.0" prefHeight="222.0" prefWidth="351.0" style="-fx-background-color: #b1bfca;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="71.0">
+                                <TableView fx:id="companyOverviewTable" layoutY="71.0" minWidth="350.0" prefHeight="222.0" prefWidth="351.0" style="-fx-background-color: #c6c6c6;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="71.0">
                                     <columns>
                                         <TableColumn fx:id="companySymbolColumn" prefWidth="118.0" style="fx-background-color: red;" text="Stock Symbol" />
                                         <TableColumn fx:id="companyNameColumn" prefWidth="120.0" text="Company Name" />
@@ -49,7 +49,7 @@
                                     <items>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                             <children>
-                                                <TableView fx:id="companyHistoryDataTable" prefHeight="258.0" prefWidth="450.0" style="-fx-background-color: #b1bfca; -fx-border: 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <TableView fx:id="companyHistoryDataTable" prefHeight="258.0" prefWidth="450.0" style="-fx-background-color: #c6c6c6; -fx-border: 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                     <columns>
                                                         <TableColumn fx:id="dateColumn" prefWidth="46.0" text="Date" />
                                                         <TableColumn fx:id="openColumn" prefWidth="49.0" text="Open" />
@@ -71,9 +71,9 @@
                         </AnchorPane>
                     </items>
                 </SplitPane>
-                <HBox maxWidth="1200.0" style="-fx-background-color: #e3f2fd; -fx-border-color: #e3f2fd;" stylesheets="@Chart.css">
+                <HBox maxWidth="1200.0" style="-fx-background-color: #f9f9f9; -fx-border-color: #f9f9f9;" stylesheets="@Chart.css">
                     <children>
-                  <TilePane fx:id="priceChartPlaceholder" prefColumns="1" prefRows="1" style="-fx-background-color: #e3f2fd;" HBox.hgrow="ALWAYS">
+                  <TilePane fx:id="priceChartPlaceholder" prefColumns="1" prefRows="1" style="-fx-background-color: #f9f9f9;" HBox.hgrow="ALWAYS">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
@@ -84,7 +84,7 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </opaqueInsets>
                   </TilePane>
-                  <TilePane fx:id="volumeChartPlaceholder" prefColumns="1" prefRows="1" style="-fx-background-color: #e3f2fd;" HBox.hgrow="ALWAYS">
+                  <TilePane fx:id="volumeChartPlaceholder" prefColumns="1" prefRows="1" style="-fx-background-color: #f9f9f9;" HBox.hgrow="ALWAYS">
                      <padding>
                         <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
                      </padding>

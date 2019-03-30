@@ -19,7 +19,7 @@
 }
 
 .chart-title {
-    -fx-text-fill: #18227c;
+    -fx-text-fill: #3e2723;
     -fx-font-size: 1.6em;
 }
 
@@ -29,12 +29,12 @@
 }
 .axis {
     -fx-font-size: 1.4em;
-    -fx-tick-label-fill: #18227c;
+    -fx-tick-label-fill: #3e2723;
     -fx-font-family: Tahoma;
 
 }
 
 .axis-label {
-    -fx-text-fill: #462300;
+    -fx-text-fill: #3e2723;
 }
 
