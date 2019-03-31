@@ -227,7 +227,7 @@ public class CompanyOverviewController {
             volumeChartPlaceholder.getChildren().clear();
 
             // Add label to priceChartPlaceholder;
-            Text label = new Text("Select Company to See Stock Chart.");
+            Text label = new Text("Select Company to See Stock Charts.");
             label.setId("selectLabel");
               priceChartPlaceholder.getChildren().add(label);
         }
@@ -276,7 +276,7 @@ public class CompanyOverviewController {
         // Wrap the FilteredList in a SortedList.
         SortedList<Company> sortedData = new SortedList<>(filteredData);
 
-        // Bind thr SortedList comparator to the TableView comparator
+        // Bind the SortedList comparator to the TableView comparator
         sortedData.comparatorProperty().bind(companyOverviewTable.comparatorProperty());
 
         // Populate companyOverview table with sorted data.
