@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_stockapp" default="compile.module.stockapp">
+  <dirname property="module.stockapp.basedir" file="${ant.file.module_stockapp}"/>
+  
+  <property name="module.jdk.home.stockapp" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.stockapp" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.stockapp" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.stockapp" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="stockapp.output.dir" value="${module.stockapp.basedir}/out/production/StockApp"/>
+  <property name="stockapp.testoutput.dir" value="${module.stockapp.basedir}/out/test/StockApp"/>
+  
+  <path id="stockapp.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="stockapp.module.production.classpath">
+    <path refid="${module.jdk.classpath.stockapp}"/>
+    <path refid="library.opencsv-4.5.classpath"/>
+  </path>
+  
+  <path id="stockapp.runtime.production.module.classpath">
+    <pathelement location="${stockapp.output.dir}"/>
+    <path refid="library.opencsv-4.5.classpath"/>
+  </path>
+  
+  <path id="stockapp.module.classpath">
+    <path refid="${module.jdk.classpath.stockapp}"/>
+    <pathelement location="${stockapp.output.dir}"/>
+    <path refid="library.opencsv-4.5.classpath"/>
+  </path>
+  
+  <path id="stockapp.runtime.module.classpath">
+    <pathelement location="${stockapp.testoutput.dir}"/>
+    <pathelement location="${stockapp.output.dir}"/>
+    <path refid="library.opencsv-4.5.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.stockapp">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.stockapp">
+    <patternset refid="excluded.from.module.stockapp"/>
+  </patternset>
+  
+  <path id="stockapp.module.sourcepath">
+    <dirset dir="${module.stockapp.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.stockapp" depends="compile.module.stockapp.production,compile.module.stockapp.tests" description="Compile module StockApp"/>
+  
+  <target name="compile.module.stockapp.production" depends="register.custom.compilers" description="Compile module StockApp; production classes">
+    <mkdir dir="${stockapp.output.dir}"/>
+    <javac2 destdir="${stockapp.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.stockapp}/javac">
+      <compilerarg line="${compiler.args.stockapp}"/>
+      <bootclasspath refid="stockapp.module.bootclasspath"/>
+      <classpath refid="stockapp.module.production.classpath"/>
+      <src refid="stockapp.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.stockapp"/>
+    </javac2>
+    
+    <copy todir="${stockapp.output.dir}">
+      <fileset dir="${module.stockapp.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.stockapp.tests" depends="register.custom.compilers,compile.module.stockapp.production" description="compile module StockApp; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.stockapp" description="cleanup module">
+    <delete dir="${stockapp.output.dir}"/>
+    <delete dir="${stockapp.testoutput.dir}"/>
+  </target>
+</project>

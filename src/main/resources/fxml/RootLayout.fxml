@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="968.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stock.app.RootLayoutController">
+    <top>
+        <MenuBar BorderPane.alignment="CENTER">
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Close" />
+                        <MenuItem mnemonicParsing="false" onAction="#handleSaveAs" text="Save As..." />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Report">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#handleShowCompaniesReport" text="Show Report" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleSaveAs" text="Save To File" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+</BorderPane>
