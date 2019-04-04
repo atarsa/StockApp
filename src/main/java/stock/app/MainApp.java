@@ -182,18 +182,20 @@ public class MainApp extends Application {
         try {
             fileWriter = new FileWriter(file);
             for (int i=0; i < companyOverview.size(); i++){
-                fileWriter.write("\n");
-                fileWriter.write("Number: " + (i+1) + "\n");
-                fileWriter.write("\n");
-                fileWriter.write("Stock Symbol: " + companyOverview.get(i).getCompanySymbol()+ "\n");
-                fileWriter.write("Company Name: " + companyOverview.get(i).getCompanyName()+ "\n");
+
+                fileWriter.write(System.lineSeparator());
+                fileWriter.write("Number: " + (i+1) + System.lineSeparator());
+                fileWriter.write(System.lineSeparator());
+                fileWriter.write("Stock Symbol: " + companyOverview.get(i).getCompanySymbol()+ System.lineSeparator());
+                fileWriter.write("Company Name: " + companyOverview.get(i).getCompanyName()+ System.lineSeparator());
                 fileWriter.write("Highest: " + companyOverview.get(i).getDateOfHighestPrice()+
-                        "\n");
+                        System.lineSeparator());
                 fileWriter.write("Lowest: " + companyOverview.get(i).getDateOfLowestPrice()+
-                        "\n");
+                        System.lineSeparator());
                 fileWriter.write("Average close: " + companyOverview.get(i).getAverageClosePrice()+ "\n");
-                fileWriter.write("Close: " + companyOverview.get(i).getLatestPrice() + "\n");
-                fileWriter.write("\n======================== \n");
+                fileWriter.write("Close: " + companyOverview.get(i).getLatestPrice() + System.lineSeparator());
+                fileWriter.write(System.lineSeparator()+
+                        "========================" + System.lineSeparator());
             }
         }
         finally {
